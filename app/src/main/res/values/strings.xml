@@ -1,3 +1,9 @@
 <resources>
   <string name="app_name">Assignment5</string>
+  <string name="password_hint">Password</string>
+  <string name="username_hint">Username</string>
+  <string name="login_button">Login</string>
+  <string name="toast">Username or Password is incorrect</string>
+  <string name="no_result">No result. Error fetching products</string>
+  <string name="no_products">There are no products</string>
 </resources>
