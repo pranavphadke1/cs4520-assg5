@@ -14,6 +14,32 @@ import com.cs4520.assignment5.databinding.ProductListViewBinding
 class ProductListFragment:Fragment(R.layout.product_list_view) {
     private var _product_list_binding: ProductListViewBinding? = null
     private val product_list_binding get() = _product_list_binding!!
+    private lateinit var viewModelRef: ViewModel
+
+    override fun onResume() {
+        super.onResume()
+        viewModelRef.productList.observe(viewLifecycleOwner, Observer { res ->
+            _product_list_binding!!.pBar.visibility = View.GONE
+            if (res == null){
+                _product_list_binding!!.errorText.visibility = View.VISIBLE
+                _product_list_binding!!.errorText.text = getString(R.string.no_result)
+            }
+            else if (res.size == 0) {
+                _product_list_binding!!.errorText.visibility = View.VISIBLE
+                _product_list_binding!!.errorText.text = getString(R.string.no_products)
+            }
+            else{
+                val productList:ProductList = ProductList()
+                for (p in res.distinct())
+                    productList.add(p)
+                (_product_list_binding!!.recyclerView.adapter as ProductAdapter).setProducts(productList)
+                (_product_list_binding!!.recyclerView.adapter as ProductAdapter).notifyDataSetChanged()
+            }
+        })
+        viewModelRef.fetchProducts()
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,33 +56,12 @@ class ProductListFragment:Fragment(R.layout.product_list_view) {
         ).build()
 
         val viewModel = ViewModel(db)
+        viewModelRef = viewModel
 
         val recyclerView:RecyclerView = _product_list_binding!!.recyclerView
         val productAdapter = ProductAdapter(products,container)
         recyclerView.adapter = productAdapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-
-        viewModel.productList.observe(viewLifecycleOwner, Observer { res ->
-            _product_list_binding!!.pBar.visibility = View.GONE
-            if (res == null){
-                _product_list_binding!!.errorText.visibility = View.VISIBLE
-                _product_list_binding!!.errorText.text = getString(R.string.no_result)
-            }
-            else if (res.size == 0) {
-                _product_list_binding!!.errorText.visibility = View.VISIBLE
-                _product_list_binding!!.errorText.text = getString(R.string.no_products)
-            }
-            else{
-                val productList:ProductList = ProductList()
-                for (p in res.distinct())
-                    productList.add(p)
-
-                productAdapter.setProducts(productList)
-                productAdapter.notifyDataSetChanged()
-            }
-        })
-
-        viewModel.fetchProducts()
         return product_list_binding.root
     }
 }
