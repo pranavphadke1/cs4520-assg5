@@ -1,14 +1,27 @@
 package com.cs4520.assignment5
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.cs4520.assignment5.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var activity_main_binding: ActivityMainBinding
+
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity_main_binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(activity_main_binding.root)
+        val context = this
+        setContent {
+            val navController = rememberNavController()
+            NavHost(navController = navController, startDestination = "login") {
+                composable("login") {
+                    LoginPage(navController)
+                }
+                composable("productList") {
+                    ProductListWrapper(context)
+                }
+            }
+        }
     }
 }

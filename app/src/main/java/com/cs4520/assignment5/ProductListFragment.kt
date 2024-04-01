@@ -57,7 +57,7 @@ class ProductListFragment:Fragment(R.layout.product_list_view) {
         ).build()
         // Initialize WorkManager
         val workManager = WorkManager.getInstance(requireContext())
-        val viewModel =  ViewModel(db, workManager, viewLifecycleOwner)
+        val viewModel =  ViewModel(db, workManager)
         viewModelRef = viewModel
 
 

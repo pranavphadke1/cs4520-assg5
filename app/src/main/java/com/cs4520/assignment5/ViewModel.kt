@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
 import java.util.concurrent.TimeUnit
 
-class ViewModel(private val db: AppDatabase, private val workManager: WorkManager, viewLifecycleOwner: LifecycleOwner) : ViewModel() {
+class ViewModel(private val db: AppDatabase, private val workManager: WorkManager) : ViewModel() {
 
     var productList = MutableLiveData<ProductList?>()
     private val productDao = db.productDao()
@@ -43,7 +43,7 @@ class ViewModel(private val db: AppDatabase, private val workManager: WorkManage
 
         val workInfoLiveData = workManager.getWorkInfoByIdLiveData(periodicRequest.id)
 
-        workInfoLiveData.observe(viewLifecycleOwner) { workInfo ->
+        workInfoLiveData.observeForever() { workInfo ->
             if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
                 val outputData = workInfo.outputData
                 val productListByteArray = outputData.getByteArray("productList")
