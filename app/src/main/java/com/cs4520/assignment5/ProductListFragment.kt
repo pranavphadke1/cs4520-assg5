@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.cs4520.assignment5.databinding.ProductListViewBinding
 
 class ProductListFragment:Fragment(R.layout.product_list_view) {
@@ -54,9 +55,11 @@ class ProductListFragment:Fragment(R.layout.product_list_view) {
             requireContext(),
             AppDatabase::class.java, "product-database"
         ).build()
-
-        val viewModel = ViewModel(db)
+        // Initialize WorkManager
+        val workManager = WorkManager.getInstance(requireContext())
+        val viewModel =  ViewModel(db, workManager, viewLifecycleOwner)
         viewModelRef = viewModel
+
 
         val recyclerView:RecyclerView = _product_list_binding!!.recyclerView
         val productAdapter = ProductAdapter(products,container)
