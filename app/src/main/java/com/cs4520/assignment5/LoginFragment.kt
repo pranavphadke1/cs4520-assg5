@@ -35,7 +35,7 @@ class LoginFragment:Fragment(R.layout.login_view) {
                 passwordText.setText("")
             }
             else {
-                Toast.makeText(login_view_binding.root.context, getString(R.string.toast),Toast.LENGTH_SHORT).show()
+                Toast.makeText(login_view_binding.root.context, getString(R.string.login_error),Toast.LENGTH_SHORT).show()
             }
         }
         return login_view_binding.root
