@@ -17,7 +17,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,13 +33,11 @@ fun ProductListWrapper(context: Context) {
             val productList by remember {
                 viewModel.productList
             }
-            val fetchDone by remember {
-                mutableStateOf(!viewModel.fetching.value)
+            val fetching by remember {
+                viewModel.fetching
             }
-            println("look here")
-            println(fetchDone)
-            if (!fetchDone) {
-                CircularProgressIndicator(modifier = Modifier.width(25.dp))
+            if (fetching) {
+                CircularProgressIndicator(modifier = Modifier.width(15.dp))
             }
             else {
                 if (productList != null && productList!!.size > 0) {
