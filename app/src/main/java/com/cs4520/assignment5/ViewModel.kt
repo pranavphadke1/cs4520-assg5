@@ -28,8 +28,8 @@ class ViewModel(private val db: AppDatabase, private val workManager: WorkManage
 
 
         val periodicRequest = PeriodicWorkRequestBuilder<CoroutineApiCall>(
-            repeatInterval = 10,
-            repeatIntervalTimeUnit = TimeUnit.SECONDS
+            repeatInterval = 1,
+            repeatIntervalTimeUnit = TimeUnit.HOURS
         )
             .setConstraints(constraints)
             .build()
